@@ -1,13 +1,19 @@
-import mysql from 'mysql2/promise'
+import pg from 'pg'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const { Pool } = pg
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+})
 
 const dbConnection = async () => {
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-  })
-  return connection
+  const client = await pool.connect()
+  return client
 }
-
 export default dbConnection
