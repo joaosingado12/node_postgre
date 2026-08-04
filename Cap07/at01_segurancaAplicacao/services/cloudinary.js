@@ -1,0 +1,24 @@
+import { v2 as cloudinary } from 'cloudinary'
+
+const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME
+const API_KEY = process.env.CLOUDINARY_API_KEY
+const API_SECRET = process.env.CLOUDINARY_API_SECRET
+const FOLDER = process.env.CLOUDINARY_FOLDER || 'amigo-pet'
+
+cloudinary.config({
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET
+})
+
+export const uploadBuffer = (buffer, filename) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream({ folder: FOLDER, public_id: filename }, (error, result) => {
+      if (error) return reject(error)
+      resolve(result)
+    })
+    stream.end(buffer)
+  })
+}
+
+export default cloudinary

@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id       Int     @id @default(autoincrement())
+  nome     String
+  cpf      String  @unique
+  telefone String?
+  whatsapp String?
+  email    String  @unique
+  senha    String
+
+  // Relacionamentos
+  pets    Pet[]
+  doacoes Doacao[]
+
+  // Carimbos de Auditoria
+  criado_em     DateTime @default(now())
+  atualizado_em DateTime @updatedAt
+}
+
+model Pet {
+  id      Int     @id @default(autoincrement())
+  id_cli  Int
+  usuario Usuario @relation(fields: [id_cli], references: [id], onDelete: Cascade)
+
+  nome    String
+  sexo    String?
+  especie String
+  raca    String
+  peso    Float?
+  tamanho String
+  idade   Int?
+  doenca  String?
+  obs     String?
+
+  // Relacionamentos
+  doacoes Doacao[]
+
+  // Carimbos de Auditoria
+  criado_em     DateTime @default(now())
+  atualizado_em DateTime @updatedAt
+}
+
+model Doacao {
+  id     Int @id @default(autoincrement())
+  id_pet Int
+  pet    Pet @relation(fields: [id_pet], references: [id], onDelete: Cascade)
+
+  id_cli_interesse Int?
+  usuario          Usuario? @relation(fields: [id_cli_interesse], references: [id], onDelete: SetNull)
+
+  data_interesse DateTime
+  data_doacao    DateTime?
+  status         String
+
+  // Carimbos de Auditoria
+  criado_em     DateTime @default(now())
+  atualizado_em DateTime @updatedAt
+
+// ==========================================
+// TABELA: imagens dos pets
+// ==========================================
+model PetImage {
+  id        Int      @id @default(autoincrement())
+  petId     Int
+  url       String   @db.VarChar(500)
+  publicId  String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  pet Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@map("pet_images")
+}
+}
+
+model LogRequisicao {
+  id        Int      @id @default(autoincrement())
+  dataHora  DateTime @default(now())
+  ip        String
+  metodo    String
+  rota      String
+  status    Int
+  tempoMs   Int
+  userAgent String?
+  usuarioId Int? // Permanece nulo se for um visitante anônimo
+}

@@ -1,0 +1,66 @@
+openapi: 3.0.3
+info:
+  title: Amigo Pet API
+  version: '1.0.0'
+  description: API de gerenciamento de pets com autenticação, upload de imagens e documentação Swagger.
+servers:
+  - url: http://localhost:3500
+    description: Servidor local
+paths:
+  /login:
+    post:
+      summary: Autentica um usuário e retorna token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                senha:
+                  type: string
+              required: [email, senha]
+      responses:
+        '200':
+          description: Autenticação bem sucedida.
+        '401':
+          description: Credenciais inválidas.
+  /pet/{id}/imagens:
+    post:
+      summary: Envia imagem de pet para Cloudinary.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imagem:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Imagem criada.
+        '400':
+          description: Arquivo não enviado.
+        '403':
+          description: Acesso negado.
+    get:
+      summary: Lista imagens de um pet.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Lista de imagens retornada.

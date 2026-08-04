@@ -1,0 +1,7 @@
+npm create vite@latest web-amigo-pet -- --template react
+cd web-amigo-pet
+
+npm install
+npm install axios react-router-dom
+npm install -D tailwindcss @tailwindcss/vite
+npm install cors

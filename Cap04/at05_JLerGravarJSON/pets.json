@@ -1,0 +1,26 @@
+[
+  {
+    "nome": "MiauMiau",
+    "especie": "gato",
+    "idadeAproximada": "1",
+    "porteTamanho": "médio",
+    "corPredominante": "Cinza",
+    "corSecundaria": "Marrom"
+  },
+  {
+    "nome": "Totó",
+    "especie": "cão",
+    "idadeAproximada": "3",
+    "porteTamanho": "pequeno",
+    "corPredominante": "Caramelo",
+    "corSecundaria": "branco"
+  },
+  {
+    "nome": "Soluço",
+    "especie": "dragão",
+    "idadeAproximada": "2500",
+    "porteTamanho": "Grande",
+    "corPredominante": "Verde",
+    "corSecundaria": "Vermelho"
+  }
+]
