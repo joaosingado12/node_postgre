@@ -40,8 +40,8 @@ export const login = async (req, res) => {
   try {
     const { email, senha } = req.body
 
-    const [usuarios] = await pool.execute(
-      'SELECT * FROM usuarios WHERE email = ?',
+    const { rows: usuarios } = await pool.query(
+      'SELECT * FROM usuarios WHERE email = $1',
       [email]
     )
 

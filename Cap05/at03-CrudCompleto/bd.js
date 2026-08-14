@@ -34,6 +34,7 @@ const obterChavePrimaria = async (tabela) => {
 // Obtém os metadados das colunas para filtrar o que deve ser inserido/atualizado
 const obterCampos = async (tabela) => {
   try {
+    console.log("obter")
     const pk = await obterChavePrimaria(tabela)
     const sql = `
       SELECT column_name
@@ -68,6 +69,7 @@ export const inserir = async (tabela, dados) => {
 }
 
 export const ler = async (tabela, id = '') => {
+  console.log("ler")
   const pk = await obterChavePrimaria(tabela)
   const sql = id ? `SELECT * FROM ${tabela} WHERE ${pk} = $1` : `SELECT * FROM ${tabela}`
   
