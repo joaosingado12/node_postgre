@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação Completa - API Amigo do Pet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #38bdf8;
+            --dark: #0f172a;
+            --slate: #475569;
+            --light: #f1f5f9;
+            --white: #ffffff;
+            --bg: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --protected: #8b5cf6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Lato', sans-serif; background-color: var(--bg); color: var(--slate); }
+
+        header { background-color: var(--dark); color: var(--white); padding: 3rem 1rem; text-align: center; }
+        header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; }
+        header span { color: var(--primary); }
+
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+
+        /* Tabs */
+        .tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .tab-btn { 
+            background: var(--white); border: 2px solid var(--primary); color: var(--dark); 
+            padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-family: 'Poppins';
+            font-weight: 600; transition: 0.3s;
+        }
+        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: var(--white); }
+
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+
+        /* Cards */
+        .card { background: var(--white); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 2rem; margin-bottom: 2rem; }
+        h2 { font-family: 'Poppins'; color: var(--dark); margin-bottom: 1.5rem; border-left: 5px solid var(--primary); padding-left: 1rem; }
+        
+        /* Table Styles */
+        .table-responsive { overflow-x: auto; margin: 1.5rem 0; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: var(--light); padding: 1rem; text-align: left; color: var(--dark); font-weight: 700; }
+        td { padding: 1rem; border-bottom: 1px solid var(--light); vertical-align: middle; }
+
+        .verb { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 6px; font-weight: 800; font-size: 0.75rem; color: white; width: 80px; text-align: center; text-transform: uppercase; }
+        .get { background: #3b82f6; }
+        .post { background: var(--success); }
+        .put { background: var(--warning); }
+        .delete { background: var(--danger); }
+
+        /* Badges de Acesso */
+        .badge-public { background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
+        .badge-protected { background: var(--protected); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
+
+        code { background: #1e293b; color: #38bdf8; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.9rem; white-space: nowrap; }
+        pre { background: #1e293b; color: #f8fafc; padding: 1.5rem; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.85rem; margin-top: 1rem; position: relative; overflow-x: auto; }
+        
+        .header-req { color: #f59e0b; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #475569; display: block; }
+
+        .grid-docs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 992px) { .grid-docs { grid-template-columns: 1fr; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>API Amigo do <span>Pet</span></h1>
+    <p>Documentação Completa do Sistema CRUD Dinâmico Autenticado</p>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'auth')"><i class="fas fa-key"></i> LOGIN</button>
+        <button class="tab-btn" onclick="openTab(event, 'usuarios')"><i class="fas fa-users"></i> USUÁRIOS</button>
+        <button class="tab-btn" onclick="openTab(event, 'pets')"><i class="fas fa-dog"></i> PETS</button>
+        <button class="tab-btn" onclick="openTab(event, 'doacoes')"><i class="fas fa-hand-holding-heart"></i> DOAÇÕES</button>
+    </div>
+
+    <div id="auth" class="tab-content active">
+        <div class="card">
+            <h2>Autenticação</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Acesso</th>
+                            <th>Método</th>
+                            <th>Endpoint</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-public"><i class="fas fa-globe"></i> Pública</span></td>
+                            <td><span class="verb post">POST</span></td>
+                            <td><code>/login</code></td>
+                            <td>Valida credenciais do usuário e retorna o Token JWT necessário para as rotas protegidas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid-docs">
+                <div>
+                    <h4>Exemplo JSON - Endpoint de Login</h4>
+                    <pre>{
+  "email": "leo@email.com",
+  "senha": "123"
+}</pre>
+                </div>
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 8px;">
+                    <h4>Como usar o Token?</h4>
+                    <p>Ao fazer o login com sucesso, a API retornará um JSON contendo a propriedade <code>token</code>. Copie esse token.</p>
+                    <p>Para acessar as rotas protegidas das outras abas, adicione um Header na sua requisição HTTP com a seguinte estrutura:</p>
+                    <br>
+                    <code>Authorization: Bearer [COLE_O_TOKEN_AQUI]</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="usuarios" class="tab-content">
+        <div class="card">
+            <h2>Gestão de Usuários</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Acesso</th>
+                            <th>Método</th>
+                            <th>Endpoint</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="badge-public"><i class="fas fa-globe"></i> Pública</span></td><td><span class="verb post">POST</span></td><td><code>/usuarios</code></td><td>Cadastra um novo usuário no banco de dados.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb get">GET</span></td><td><code>/usuarios</code></td><td>Lista todos os registros da tabela usuarios.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb get">GET</span></td><td><code>/usuarios/1</code></td><td>Busca um usuário específico pela Chave Primária.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb put">PUT</span></td><td><code>/usuarios/1</code></td><td>Atualiza dados dinamicamente usando o ID.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb delete">DELETE</span></td><td><code>/usuarios/1</code></td><td>Remove o registro permanentemente.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid-docs">
+                <div>
+                    <h4>Exemplo JSON Completo (POST /usuarios)</h4>
+                    <pre>{
+  "nome": "Leonardo Fernandes",
+  "cpf": "12345678901",
+  "telefone": "17999999999",
+  "whatsapp": "17988888888",
+  "email": "leo@email.com",
+  "senha": "senha_segura_123"
+}</pre>
+                    <br>
+                    <h4>Exemplo JSON - PUT Atualizar (Protegido)</h4>
+                    <pre><span class="header-req">// Requer no Header:
+Authorization: Bearer seu_token_jwt_aqui</span>
+{
+  "nome": "Leonardo Fernandes Atualizado",
+  "telefone": "17888888888"
+}</pre>
+                </div>
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 8px;">
+                    <h4>Regras de Negócio</h4>
+                    <ul>
+                        <li>O <strong>nome</strong>, <strong>cpf</strong>, <strong>email</strong> e <strong>senha</strong> são campos obrigatórios (`NOT NULL`).</li>
+                        <li>O <strong>cpf</strong> deve ter exatamente 11 caracteres.</li>
+                        <li><strong>email</strong> e <strong>cpf</strong> são campos únicos (`UNIQUE`).</li>
+                        <li>A <strong>senha</strong> é automaticamente encriptada no cadastro pelo Controller.</li>
+                        <li>Excluir um usuário (`DELETE`) remove em cascata seus pets devido à constraint `ON DELETE CASCADE`.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pets" class="tab-content">
+        <div class="card">
+            <h2>Gestão de Animais</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Acesso</th>
+                            <th>Método</th>
+                            <th>Endpoint</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="badge-public"><i class="fas fa-globe"></i> Pública</span></td><td><span class="verb get">GET</span></td><td><code>/pets</code></td><td>Retorna a lista completa de animais disponíveis.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb post">POST</span></td><td><code>/pets</code></td><td>Vincula um novo pet a um usuário existente.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb get">GET</span></td><td><code>/pets/10</code></td><td>Busca detalhes de um animal específico pelo ID.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb put">PUT</span></td><td><code>/pets/10</code></td><td>Atualiza informações do pet.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb delete">DELETE</span></td><td><code>/pets/10</code></td><td>Exclui o animal do sistema.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid-docs">
+                <div>
+                    <h4>Exemplo JSON Completo (POST /pets)</h4>
+                    <pre><span class="header-req">// Requer no Header:
+Authorization: Bearer seu_token_jwt_aqui</span>
+{
+  "id_cli": 1,
+  "nome": "Rex",
+  "sexo": "M",
+  "especie": "Cachorro",
+  "raca": "Labrador",
+  "peso": 25.50,
+  "tamanho": "Grande",
+  "idade": 3,
+  "doenca": "Nenhuma",
+  "obs": "Dócil, vacinado e vermifugado"
+}</pre>
+                </div>
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 8px;">
+                    <h4>Dicas de Integração e Estrutura</h4>
+                    <p>A listagem geral <code>GET /pets</code> é pública para permitir que visitantes vejam a vitrine de adoção. Porém, para alterar dados, é obrigatório estar autenticado.</p>
+                    <p><strong>Constraints:</strong></p>
+                    <ul>
+                        <li>O <code>id_cli</code> é uma Chave Estrangeira. O usuário (dono) precisa existir na tabela de usuários.</li>
+                        <li>O <code>sexo</code> aceita apenas 'M' ou 'F'.</li>
+                        <li>Os campos <code>nome</code> e <code>especie</code> são obrigatórios.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="doacoes" class="tab-content">
+        <div class="card">
+            <h2>Gestão de Doações</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Acesso</th>
+                            <th>Método</th>
+                            <th>Endpoint</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb post">POST</span></td><td><code>/doacoes</code></td><td>Registra uma nova intenção de adoção.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb get">GET</span></td><td><code>/doacoes</code></td><td>Consulta o histórico de todas as doações.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb get">GET</span></td><td><code>/doacoes/5</code></td><td>Consulta os dados de um processo de doação específico.</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb put">PUT</span></td><td><code>/doacoes/5</code></td><td>Finaliza a doação ou altera o status (ex: Aguardando -> Concluído).</td></tr>
+                        <tr><td><span class="badge-protected"><i class="fas fa-lock"></i> Protegida</span></td><td><span class="verb delete">DELETE</span></td><td><code>/doacoes/5</code></td><td>Cancela ou remove o registro de doação.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid-docs">
+                <div>
+                    <h4>Exemplo JSON Completo (POST /doacoes)</h4>
+                    <pre><span class="header-req">// Requer no Header:
+Authorization: Bearer seu_token_jwt_aqui</span>
+{
+  "id_pet": 10,
+  "id_cli_interesse": 2,
+  "data_interesse": "2026-05-28",
+  "data_doacao": null,
+  "status": "Interessado"
+}</pre>
+                    <br>
+                    <h4>Exemplo JSON (PUT - Finalizar Doação)</h4>
+                    <pre><span class="header-req">// Requer no Header:
+Authorization: Bearer seu_token_jwt_aqui</span>
+{
+  "data_doacao": "2026-06-02",
+  "status": "Concluída"
+}</pre>
+                </div>
+                <div style="background: var(--light); padding: 1.5rem; border-radius: 8px;">
+                    <h4>Regras do Fluxo de Doação</h4>
+                    <p>Todas as rotas de doação são <strong>protegidas</strong>, garantindo que apenas usuários registrados possam participar de processos de adoção.</p>
+                    <p><strong>Relacionamentos:</strong></p>
+                    <ul>
+                        <li>O <code>id_pet</code> garante que o processo se refira a um animal válido. Se o pet for deletado, a doação é apagada em cascata.</li>
+                        <li>O <code>id_cli_interesse</code> vincula o possível adotante. Se esse adotante apagar a conta, o campo na doação vira <code>NULL</code>, mas o histórico da doação do pet não é perdido (`ON DELETE SET NULL`).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        // Esconde todo o conteúdo das abas
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        // Remove a classe "active" dos botões
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        // Mostra a aba atual e adiciona classe "active" no botão clicado
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
