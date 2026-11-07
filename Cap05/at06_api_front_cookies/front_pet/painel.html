@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel | Sistema de Adoção</title>
+  
+  <!-- Seu CSS global com as variáveis de cores -->
+  <link rel="stylesheet" href="./src/css/global.css">
+  
+  <style>
+    /* Sobrescrevendo o body apenas para o painel não centralizar tudo no meio da tela */
+    body {
+      display: block; 
+      min-height: 100vh;
+      background-color: var(--bg-color);
+    }
+
+    /* Barra de Navegação Superior */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background-color: var(--box-bg);
+      border-bottom: 3px solid var(--accent-color);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .navbar .logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text-primary);
+    }
+
+    .navbar-menu {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .navbar-menu a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-menu a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Botão de Logout elegante (vazado) */
+    .btn-logout {
+      background-color: transparent;
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+      padding: 8px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: auto;
+      margin-top: 0;
+    }
+
+    .btn-logout:hover {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    /* Área Principal do Dashboard */
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .dashboard-header {
+      margin-bottom: 30px;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2rem;
+      color: var(--text-primary);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    /* Cards para exibir os dados */
+    .card {
+      background-color: var(--box-bg);
+      padding: 25px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .card h3 {
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .data-list {
+      list-style: none;
+    }
+
+    .data-list li {
+      padding: 12px 0;
+      color: var(--text-secondary);
+      border-bottom: 1px dashed var(--border-color);
+      font-size: 0.95rem;
+    }
+
+    .data-list li:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navegação Superior -->
+  <nav class="navbar">
+    <div class="logo">AdotaPet Sistema</div>
+    <div class="navbar-menu">
+      <a href="./painel.html">Dashboard</a>
+      <a href="#">Gerenciar Pets</a>
+      <a href="#">Doações</a>
+      <button id="btn-logout" class="btn-logout">Sair</button>
+    </div>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <main class="container">
+    <div class="dashboard-header">
+      <!-- O span vazio será preenchido pelo JavaScript com o nome de quem logou -->
+      <h1>Olá, <span id="nome-usuario">...</span></h1>
+      <p class="subtitle">Bem-vindo à sua área restrita.</p>
+    </div>
+
+    <!-- Grid com os blocos de dados -->
+    <div class="dashboard-grid">
+      
+      <div class="card">
+        <h3>Meus Pets (Exemplo)</h3>
+        <ul id="lista-pets" class="data-list">
+          <li>Carregando dados da API...</li>
+          <!-- O JS vai injetar <li> dinâmicos aqui depois -->
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Últimas Interações</h3>
+        <ul id="lista-doacoes" class="data-list">
+          <li>Nenhuma doação registrada ainda.</li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Lógica de proteção e carregamento de dados -->
+  <script type="module" src="./src/js/pages/painel.js"></script>
+</body>
+</html>

@@ -40,9 +40,6 @@ app.put('/:tabela/:id', async (req, res) => {
 })
 
 // DELETE: Remove baseado na PK dinâmica
-app.delete('/:tabela/:id', async (req, res) => {
-  try { res.json(await bd.deletar(req.params.tabela, req.params.id)) }
-  catch (e) { res.status(400).json({ erro: e.message }) }
-})
+
 
 app.listen(PORT, () => console.log(`🚀 Server: http://localhost:${PORT}`))

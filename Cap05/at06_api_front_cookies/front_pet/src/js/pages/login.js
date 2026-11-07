@@ -1,9 +1,4 @@
-// 1. Configuração Global do Axios
-// Isso garante que todas as requisições enviem e recebam cookies automaticamente
-const api = axios.create({
-  baseURL: 'http://localhost:3000/', // Substitua pela porta do seu Express
-  withCredentials: true // ESSENCIAL: Permite que o cookie HttpOnly seja salvo e enviado
-});
+import { api } from "../api";
 
 // Capturando elementos do DOM
 const form = document.getElementById('login-form');
@@ -29,10 +24,15 @@ form.addEventListener('submit', async (evento) => {
       email: inputEmail.value,
       senha: inputSenha.value
     });
+    console.log(resposta)
+    // Salva os dados inofensivos no navegador
+    localStorage.setItem('usuario', JSON.stringify(resposta.data.usuario));
+
+    window.location.href = './painel.html';
 
     // Se chegar aqui, o Express retornou 200 OK
     // O cookie já foi salvo pelo navegador automaticamente neste momento!
-    
+
     msgSucesso.innerText = `Bem-vindo, ${resposta.data.usuario.nome}! Redirecionando...`;
     msgSucesso.classList.remove('oculta');
 
@@ -41,6 +41,7 @@ form.addEventListener('submit', async (evento) => {
       // window.location.href = '/dashboard.html';
       console.log('Redirecionando para área interna...');
     }, 2000);
+
 
   } catch (erro) {
     // O Axios captura códigos 400, 401, 500 automaticamente e cai no catch
